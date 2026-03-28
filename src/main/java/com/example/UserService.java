@@ -8,6 +8,16 @@ public class UserService {
 
     // SECURITY ISSUE: Hardcoded credentials
     private String password = "admin123";
+    // EVEN WORSE: another SQL injection
+    public void deleteUser(String username) throws Exception {
+        Connection conn =
+            DriverManager.getConnection("jdbc:mysql://localhost/db",
+                "root", password);
+        Statement st = conn.createStatement();
+        String query =
+            "DELETE FROM users WHERE name='" + username + "'";
+        st.execute(query);
+    }
 
     // VULNERABILITY: SQL Injection
     public void findUser(String username) throws Exception {
